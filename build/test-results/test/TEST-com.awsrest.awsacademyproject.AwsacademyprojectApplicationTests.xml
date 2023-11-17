@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.awsrest.awsacademyproject.AwsacademyprojectApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-11-15T00:20:38" hostname="RAFA-LAPTOP" time="1.004">
+<testsuite name="com.awsrest.awsacademyproject.AwsacademyprojectApplicationTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-11-17T01:47:52" hostname="RAFA-LAPTOP" time="1.294">
   <properties/>
-  <testcase name="contextLoads()" classname="com.awsrest.awsacademyproject.AwsacademyprojectApplicationTests" time="1.004"/>
-  <system-out><![CDATA[18:20:36.983 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.awsrest.awsacademyproject.AwsacademyprojectApplicationTests]: AwsacademyprojectApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-18:20:37.109 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.awsrest.awsacademyproject.AwsacademyprojectApplication for test class com.awsrest.awsacademyproject.AwsacademyprojectApplicationTests
+  <testcase name="contextLoads()" classname="com.awsrest.awsacademyproject.AwsacademyprojectApplicationTests" time="1.294"/>
+  <system-out><![CDATA[19:47:50.039 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.awsrest.awsacademyproject.AwsacademyprojectApplicationTests]: AwsacademyprojectApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+19:47:50.223 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.awsrest.awsacademyproject.AwsacademyprojectApplication for test class com.awsrest.awsacademyproject.AwsacademyprojectApplicationTests
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -13,9 +13,9 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.1.5)
 
-2023-11-14T18:20:37.624-06:00  INFO 6288 --- [    Test worker] c.a.a.AwsacademyprojectApplicationTests  : Starting AwsacademyprojectApplicationTests using Java 17.0.9 with PID 6288 (started by betoh in C:\Users\betoh\OneDrive\Documentos\FMAT\awsacademyproject)
-2023-11-14T18:20:37.626-06:00  INFO 6288 --- [    Test worker] c.a.a.AwsacademyprojectApplicationTests  : No active profile set, falling back to 1 default profile: "default"
-2023-11-14T18:20:38.928-06:00  INFO 6288 --- [    Test worker] c.a.a.AwsacademyprojectApplicationTests  : Started AwsacademyprojectApplicationTests in 1.615 seconds (process running for 3.262)
+2023-11-16T19:47:50.899-06:00  INFO 4928 --- [    Test worker] c.a.a.AwsacademyprojectApplicationTests  : Starting AwsacademyprojectApplicationTests using Java 17.0.9 with PID 4928 (started by betoh in C:\Users\betoh\OneDrive\Documentos\FMAT\awsacademyproject)
+2023-11-16T19:47:50.899-06:00  INFO 4928 --- [    Test worker] c.a.a.AwsacademyprojectApplicationTests  : No active profile set, falling back to 1 default profile: "default"
+2023-11-16T19:47:52.767-06:00  INFO 4928 --- [    Test worker] c.a.a.AwsacademyprojectApplicationTests  : Started AwsacademyprojectApplicationTests in 2.266 seconds (process running for 4.35)
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
