@@ -1,59 +1,69 @@
 package com.awsrest.awsacademyproject.Controller;
 
-
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.awsrest.awsacademyproject.Entities.Alumno;
 import com.awsrest.awsacademyproject.Services.AlumnoService;
 
-
 @RestController
 @RequestMapping("/alumnos")
 public class AlumnoController {
-   private AlumnoService alumnoService;
+    private AlumnoService alumnoService;
 
-   @Autowired
-   public AlumnoController(AlumnoService alumnoService) {
-      this.alumnoService = alumnoService;
-   }
+    @Autowired
+    public AlumnoController(AlumnoService alumnoService) {
+        this.alumnoService = alumnoService;
+    }
 
+    @GetMapping
+    public ResponseEntity<List<Alumno>> getAllAlumnos() {
+        List<Alumno> alumnos = alumnoService.getAllAlumnos();
+        return new ResponseEntity<>(alumnos, HttpStatus.OK);
+    }
 
-   @GetMapping
-   public List<Alumno> getAllAlumnos() {
-      return alumnoService.getAllAlumnos();
-   }
+    @GetMapping("/{id}")
+    public ResponseEntity<Alumno> getAlumnoById(@PathVariable Long id) {
+        Alumno alumno = alumnoService.getAlumnoById(id);
+        if (alumno != null) {
+            return new ResponseEntity<>(alumno, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
-   @GetMapping("/{id}")
-   public Alumno getAlumnoById(@PathVariable Long id) {
-      return alumnoService.getAlumnoById(id);
-   }
+    @PostMapping
+    public ResponseEntity<Alumno> createAlumno(@RequestBody Alumno alumno) {
+        if (alumno.getId() != null || alumno.getNombre() == null || alumno.getApellido() == null
+                || alumno.getMatricula() == null || alumno.getPromedio() == null) {
+            // If the ID is provided in the request, it's a bad request
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        Alumno createdAlumno = alumnoService.createAlumno(alumno);
+        return new ResponseEntity<>(createdAlumno, HttpStatus.CREATED);
+    }
 
-   @PostMapping
-   public Alumno createAlumno(@RequestBody Alumno alumno) {
-      return alumnoService.createAlumno(alumno);
-   }
+    @PutMapping("/{id}")
+    public ResponseEntity<Alumno> updateAlumno(@PathVariable Long id, @RequestBody Alumno alumno) {
+        Alumno updatedAlumno = alumnoService.updateAlumno(id, alumno);
+        if (updatedAlumno != null) {
+            return new ResponseEntity<>(updatedAlumno, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
-   @PutMapping("/{id}")
-   public Alumno updateAlumno(@PathVariable Long id, @RequestBody Alumno alumno) {
-      return alumnoService.updateAlumno(id,alumno);
-   }
-
-   @DeleteMapping("/{id}")
-   public void deleteAlumno(@PathVariable Long id) {
-      alumnoService.deleteAlumno(id);
-   }
-
-
-   
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteAlumno(@PathVariable Long id) {
+        boolean deleted = alumnoService.deleteAlumno(id);
+        if (deleted) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

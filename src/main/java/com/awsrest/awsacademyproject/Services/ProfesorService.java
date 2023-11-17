@@ -36,8 +36,8 @@ public class ProfesorService {
       return profesorToUpdate;
    }
 
-   public void deleteProfesor(Long id) {
-      profesores.removeIf(profesor -> profesor.getId().equals(id));
+   public boolean deleteProfesor(Long id) {
+      return profesores.removeIf(profesor -> profesor.getId().equals(id));
    }
    
 }

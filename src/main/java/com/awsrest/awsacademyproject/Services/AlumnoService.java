@@ -37,8 +37,8 @@ public class AlumnoService {
       return alumnoToUpdate;
    }
 
-   public void deleteAlumno(Long id) {
-      alumnos.removeIf(alumno -> alumno.getId().equals(id));
+   public boolean deleteAlumno(Long id) {
+      return alumnos.removeIf(alumno -> alumno.getId().equals(id));
    }
 
 
