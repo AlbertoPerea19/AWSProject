@@ -4,40 +4,54 @@ package com.awsrest.awsacademyproject.Services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.awsrest.awsacademyproject.Entities.Profesor;
+import com.awsrest.awsacademyproject.Repositories.ProfesorRepository;
 
 @Service
 public class ProfesorService {
-   private List<Profesor> profesores = new ArrayList<>();
+   
+   @Autowired
+   private ProfesorRepository profesorRepository;
 
    public List<Profesor> getAllProfesores() {
-      return profesores;
+      return (List<Profesor>) profesorRepository.findAll();
    }
 
-   public Profesor getProfesorById(Long id) {
-      return profesores.stream().filter(profesor -> profesor.getId().equals(id)).findFirst().orElse(null);
+   public Optional<Profesor> getProfesorById(Long id) {
+      return profesorRepository.findById(id);
    }
 
    public Profesor createProfesor(Profesor profesor) {
-      profesor.setId((long) (profesores.size() + 1));
-      profesores.add(profesor);
-      return profesor;
+      return profesorRepository.save(profesor);
    }
 
    public Profesor updateProfesor(Long id, Profesor profesor) {
-      Profesor profesorToUpdate = getProfesorById(id);
-      profesorToUpdate.setNombre(profesor.getNombre());
-      profesorToUpdate.setApellido(profesor.getApellido());
-      profesorToUpdate.setNumeroEmpleado(profesor.getNumeroEmpleado());
-      profesorToUpdate.setHorasClase(profesor.getHorasClase());
-      return profesorToUpdate;
+      Optional<Profesor> profesorUpdate = profesorRepository.findById(id);
+      if (profesorUpdate.isPresent()) {
+         Profesor profesorUpdated = profesorUpdate.get();
+         profesorUpdated.setNombre(profesor.getNombre());
+         profesorUpdated.setApellido(profesor.getApellido());
+         profesorUpdated.setHorasClase(profesor.getHorasClase());
+         profesorUpdated.setNumeroEmpleado(profesor.getNumeroEmpleado());
+         return profesorRepository.save(profesorUpdated);
+      } else {
+         return null;
+      }
    }
 
    public boolean deleteProfesor(Long id) {
-      return profesores.removeIf(profesor -> profesor.getId().equals(id));
+      try {
+         profesorRepository.deleteById(id);
+         return true;
+      } catch (Exception e) {
+         return false;
+      }
    }
    
 }

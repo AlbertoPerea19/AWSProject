@@ -1,6 +1,7 @@
 package com.awsrest.awsacademyproject.Controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,8 +29,10 @@ public class ProfesorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Profesor> getProfesorById(@PathVariable Long id) {
-        Profesor profesor = profesorService.getProfesorById(id);
-        if (profesor != null) {
+        Optional<Profesor> profesorOptional = profesorService.getProfesorById(id);
+        
+        if (profesorOptional.isPresent()) {
+            Profesor profesor = profesorOptional.get();
             return new ResponseEntity<>(profesor, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -38,10 +41,6 @@ public class ProfesorController {
 
     @PostMapping
     public ResponseEntity<Profesor> createProfesor(@RequestBody Profesor profesor) {
-        if (profesor.getId() != null || profesor.getNombre() == null || profesor.getApellido() == null
-                || profesor.getHorasClase() == null || profesor.getNumeroEmpleado() == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         Profesor createdProfesor = profesorService.createProfesor(profesor);
         return new ResponseEntity<>(createdProfesor, HttpStatus.CREATED);
     }

@@ -6,7 +6,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+@Entity
 public class Profesor {
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
     @NotNull
@@ -15,24 +23,24 @@ public class Profesor {
 
     @NotBlank
     @Size(max = 50)
-    private String nombre;
+    private String nombres;
 
     @NotBlank
     @Size(max = 50)
-    private String apellido;
+    private String apellidos;
 
     @NotNull
     private Integer horasClase;
 
-   
+   public Profesor(){}
 
    public Profesor(Long id, @NotNull @Pattern(regexp = "\\d{6}") String numeroEmpleado,
-         @NotBlank @Size(max = 50) String nombre, @NotBlank @Size(max = 50) String apellido,
+         @NotBlank @Size(max = 50) String nombres, @NotBlank @Size(max = 50) String apellidos,
          @NotNull Integer horasClase) {
       this.id = id;
       this.numeroEmpleado = numeroEmpleado;
-      this.nombre = nombre;
-      this.apellido = apellido;
+      this.nombres = nombres;
+      this.apellidos = apellidos;
       this.horasClase = horasClase;
    }
 
@@ -53,19 +61,19 @@ public class Profesor {
    }
 
    public String getNombre() {
-      return nombre;
+      return nombres;
    }
 
-   public void setNombre(String nombre) {
-      this.nombre = nombre;
+   public void setNombre(String nombres) {
+      this.nombres = nombres;
    }
 
    public String getApellido() {
-      return apellido;
+      return apellidos;
    }
 
-   public void setApellido(String apellido) {
-      this.apellido = apellido;
+   public void setApellido(String apellidos) {
+      this.apellidos = apellidos;
    }
 
    public Integer getHorasClase() {

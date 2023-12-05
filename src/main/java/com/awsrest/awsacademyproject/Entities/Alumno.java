@@ -5,16 +5,25 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
 public class Alumno {
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
     @NotBlank
     @Size(max = 50)
-    private String nombre;
+    private String nombres;
 
     @NotBlank
     @Size(max = 50)
-    private String apellido;
+    private String apellidos;
 
     @NotNull
     @Pattern(regexp = "\\d{6}") // Matrícula con 6 dígitos
@@ -23,15 +32,34 @@ public class Alumno {
     @NotNull
     private Double promedio;
 
-    
+    private String fotoPerfilUrl;
 
-   public Alumno(Long id, @NotBlank @Size(max = 50) String nombre, @NotBlank @Size(max = 50) String apellido,
-         @NotNull @Pattern(regexp = "\\d{6}") String matricula, @NotNull Double promedio) {
+    @Size(max = 30)
+    private String password;
+
+    public Alumno(){}
+
+   public Alumno(Long id, @NotBlank @Size(max = 50) String nombres, @NotBlank @Size(max = 50) String apellidos,
+         @NotNull @Pattern(regexp = "\\d{6}") String matricula, @NotNull Double promedio, String fotoPerfilUrl,
+         @Size(max = 30) String password) {
       this.id = id;
-      this.nombre = nombre;
-      this.apellido = apellido;
+      this.nombres = nombres;
+      this.apellidos = apellidos;
       this.matricula = matricula;
       this.promedio = promedio;
+      this.fotoPerfilUrl = fotoPerfilUrl;
+      this.password = password;
+   }
+
+   public Alumno(Long id, @NotBlank @Size(max = 50) String nombres, @NotBlank @Size(max = 50) String apellidos,
+         @NotNull @Pattern(regexp = "\\d{6}") String matricula, @NotNull Double promedio,
+         @Size(max = 30) String password) {
+      this.id = id;
+      this.nombres = nombres;
+      this.apellidos = apellidos;
+      this.matricula = matricula;
+      this.promedio = promedio;
+      this.password = password;
    }
 
    public Long getId() {
@@ -43,19 +71,19 @@ public class Alumno {
    }
 
    public String getNombre() {
-      return nombre;
+      return nombres;
    }
 
-   public void setNombre(String nombre) {
-      this.nombre = nombre;
+   public void setNombre(String nombres) {
+      this.nombres = nombres;
    }
 
    public String getApellido() {
-      return apellido;
+      return apellidos;
    }
 
-   public void setApellido(String apellido) {
-      this.apellido = apellido;
+   public void setApellido(String apellidos) {
+      this.apellidos = apellidos;
    }
 
    public String getMatricula() {
@@ -72,6 +100,22 @@ public class Alumno {
 
    public void setPromedio(Double promedio) {
       this.promedio = promedio;
+   }
+
+   public String getFotoPerfilUrl() {
+      return fotoPerfilUrl;
+   }
+
+   public void setFotoPerfilUrl(String fotoPerfilUrl) {
+      this.fotoPerfilUrl = fotoPerfilUrl;
+   }
+
+   public String getPassword() {
+      return password;
+   }
+
+   public void setPassword(String password) {
+      this.password = password;
    }
 
     
