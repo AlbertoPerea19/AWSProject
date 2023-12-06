@@ -17,27 +17,20 @@ public class Profesor {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-    @NotNull
-    @Pattern(regexp = "\\d{6}") // Número de empleado con 6 dígitos
+
     private String numeroEmpleado;
 
-    @NotBlank
-    @Size(max = 50)
+
     private String nombres;
 
-    @NotBlank
-    @Size(max = 50)
+
     private String apellidos;
 
-    @NotNull
     private Integer horasClase;
 
    public Profesor(){}
 
-   public Profesor(Long id, @NotNull @Pattern(regexp = "\\d{6}") String numeroEmpleado,
-         @NotBlank @Size(max = 50) String nombres, @NotBlank @Size(max = 50) String apellidos,
-         @NotNull Integer horasClase) {
-      this.id = id;
+   public Profesor(String numeroEmpleado, String nombres, String apellidos, Integer horasClase) {
       this.numeroEmpleado = numeroEmpleado;
       this.nombres = nombres;
       this.apellidos = apellidos;
@@ -60,19 +53,19 @@ public class Profesor {
       this.numeroEmpleado = numeroEmpleado;
    }
 
-   public String getNombre() {
+   public String getNombres() {
       return nombres;
    }
 
-   public void setNombre(String nombres) {
+   public void setNombres(String nombres) {
       this.nombres = nombres;
    }
 
-   public String getApellido() {
+   public String getApellidos() {
       return apellidos;
    }
 
-   public void setApellido(String apellidos) {
+   public void setApellidos(String apellidos) {
       this.apellidos = apellidos;
    }
 
