@@ -17,32 +17,21 @@ public class Alumno {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
 
-    @NotBlank
-    @Size(max = 50)
     private String nombres;
 
-    @NotBlank
-    @Size(max = 50)
     private String apellidos;
 
-    @NotNull
-    @Pattern(regexp = "\\d{6}") // Matrícula con 6 dígitos
     private String matricula;
 
-    @NotNull
     private Double promedio;
 
     private String fotoPerfilUrl;
 
-    @Size(max = 30)
     private String password;
 
     public Alumno(){}
 
-   public Alumno(Long id, @NotBlank @Size(max = 50) String nombres, @NotBlank @Size(max = 50) String apellidos,
-         @NotNull @Pattern(regexp = "\\d{6}") String matricula, @NotNull Double promedio, String fotoPerfilUrl,
-         @Size(max = 30) String password) {
-      this.id = id;
+   public Alumno(String nombres, String apellidos,String matricula, Double promedio, String fotoPerfilUrl, String password) {
       this.nombres = nombres;
       this.apellidos = apellidos;
       this.matricula = matricula;
@@ -51,10 +40,7 @@ public class Alumno {
       this.password = password;
    }
 
-   public Alumno(Long id, @NotBlank @Size(max = 50) String nombres, @NotBlank @Size(max = 50) String apellidos,
-         @NotNull @Pattern(regexp = "\\d{6}") String matricula, @NotNull Double promedio,
-         @Size(max = 30) String password) {
-      this.id = id;
+   public Alumno(String nombres, String apellidos, String matricula, Double promedio, String password) {
       this.nombres = nombres;
       this.apellidos = apellidos;
       this.matricula = matricula;
@@ -70,19 +56,19 @@ public class Alumno {
       this.id = id;
    }
 
-   public String getNombre() {
+   public String getNombres() {
       return nombres;
    }
 
-   public void setNombre(String nombres) {
+   public void setNombres(String nombres) {
       this.nombres = nombres;
    }
 
-   public String getApellido() {
+   public String getApellidos() {
       return apellidos;
    }
 
-   public void setApellido(String apellidos) {
+   public void setApellidos(String apellidos) {
       this.apellidos = apellidos;
    }
 

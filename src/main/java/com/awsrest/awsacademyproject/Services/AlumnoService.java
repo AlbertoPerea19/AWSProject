@@ -73,15 +73,22 @@ public class AlumnoService {
    }
 
    public Alumno createAlumno(Alumno alumno) {
-      return alumnoRepository.save(alumno);
+
+     if (alumno.getNombres() == null || alumno.getApellidos() == null || alumno.getMatricula() == null || alumno.getPromedio() == null) {
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los datos del alumno son inválidos");
+     }
+     return alumnoRepository.save(alumno);
    }
 
    public Alumno updateAlumno(Long id, Alumno alumno) {
+      if (alumno.getNombres() == null || alumno.getApellidos() == null || alumno.getMatricula() == null || alumno.getPromedio() == null) {
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Los datos del alumno son inválidos");
+     }
       Optional<Alumno> alumnoupdate= alumnoRepository.findById(id);
       if (alumnoupdate.isPresent()) {
          Alumno alumnoUpdated = alumnoupdate.get();
-         alumnoUpdated.setNombre(alumno.getNombre());
-         alumnoUpdated.setApellido(alumno.getApellido());
+         alumnoUpdated.setNombres(alumno.getNombres());
+         alumnoUpdated.setApellidos(alumno.getApellidos());
          alumnoUpdated.setMatricula(alumno.getMatricula());
          alumnoUpdated.setPromedio(alumno.getPromedio());
          alumnoUpdated.setFotoPerfilUrl(alumno.getFotoPerfilUrl());
@@ -150,7 +157,7 @@ public class AlumnoService {
         
         try {
             PublishRequest request = PublishRequest.builder()
-                    .message(alumno.getNombre() + "\n " + alumno.getApellido() + " \n" + alumno.getPromedio())
+                    .message(alumno.getNombres() + "\n " + alumno.getApellidos() + " \n" + alumno.getPromedio())
                     .topicArn(topicArn)
                     .build();
 
@@ -224,32 +231,33 @@ public class AlumnoService {
     }
 
    public boolean verifySession(Long id, String sessionString) {
-        Optional<Alumno> optionalAlumno = alumnoRepository.findById(id);
-        if (optionalAlumno.isPresent()) {
-            Alumno alumno = optionalAlumno.get();
-            try {
-            ScanRequest scanRequest = ScanRequest.builder()
-                .tableName("sesiones-alumnos")
-                .build();
-
-            ScanResponse response = dynamoDbClient.scan(scanRequest);
-            for (Map<String, AttributeValue> item : response.items()) {   
-               if (item.get("alumnoId").n().equals(String.valueOf(alumno.getId())) &&
-                        item.get("sessionString").s().equals(sessionString) &&
-                        item.get("active").bool()) {
-                    return true;
-                }
-            }
-        } catch (DynamoDbException e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al escribir sesión en DynamoDB", e);        
-         }
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Alumno no encontrado con id: " + id);
-        }
-         return false;
-      
-   }
+      Optional<Alumno> optionalAlumno = alumnoRepository.findById(id);
+      if (optionalAlumno.isPresent()) {
+          Alumno alumno = optionalAlumno.get();
+          try {
+              ScanRequest scanRequest = ScanRequest.builder()
+                      .tableName("sesiones-alumnos")
+                      .build();
+  
+              ScanResponse response = dynamoDbClient.scan(scanRequest);
+              for (Map<String, AttributeValue> item : response.items()) {
+                  if (item.get("alumnoId").n().equals(String.valueOf(alumno.getId())) &&
+                          item.get("sessionString").s().equals(sessionString) &&
+                          item.get("active").bool()) {
+                      return true; // Sesión válida encontrada
+                  }
+              }
+              // Si la sesión no es encontrada o no es válida
+              return false;
+          } catch (DynamoDbException e) {
+              e.printStackTrace();
+              throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al buscar sesión en DynamoDB", e);
+          }
+      } else {
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Alumno no encontrado con id: " + id);
+      }
+  }
+  
 
    public void logout(Long id, String sessionString) {
       Optional<Alumno> optionalAlumno = alumnoRepository.findById(id);

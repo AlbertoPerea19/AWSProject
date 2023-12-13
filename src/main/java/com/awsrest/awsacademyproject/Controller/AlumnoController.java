@@ -1,5 +1,6 @@
 package com.awsrest.awsacademyproject.Controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,16 +32,15 @@ public class AlumnoController {
     }
 
     @GetMapping("/{id}")
-public ResponseEntity<Alumno> getAlumnoById(@PathVariable Long id) {
-    Optional<Alumno> alumnoOptional = alumnoService.getAlumnoById(id);
-    
-    if (alumnoOptional.isPresent()) {
-        Alumno alumno = alumnoOptional.get();
-        return new ResponseEntity<>(alumno, HttpStatus.OK);
-    } else {
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Alumno> getAlumnoById(@PathVariable Long id) {
+        Optional<Alumno> alumnoOptional = alumnoService.getAlumnoById(id);
+        if (alumnoOptional.isPresent()) {
+            Alumno alumno = alumnoOptional.get();
+            return new ResponseEntity<>(alumno, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
-}
 
     @PostMapping
     public ResponseEntity<Alumno> createAlumno(@RequestBody Alumno alumno) {
@@ -70,9 +70,11 @@ public ResponseEntity<Alumno> getAlumnoById(@PathVariable Long id) {
     }
 
     @PostMapping("/{id}/fotoPerfil")
-    public ResponseEntity<String> uploadFotoPerfil(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, String>> uploadFotoPerfil(@PathVariable Long id, @RequestParam("foto") MultipartFile file) {
         String fotoPerfilUrl = alumnoService.uploadFotoPerfil(id, file);
-        return ResponseEntity.ok(fotoPerfilUrl);
+        Map<String, String> response = new HashMap<>();
+        response.put("fotoPerfilUrl", fotoPerfilUrl);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
     }
 
     @PostMapping(value = "/{id}/email", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -82,37 +84,47 @@ public ResponseEntity<Alumno> getAlumnoById(@PathVariable Long id) {
     }
 
     @PostMapping("/{id}/session/login")
-    public ResponseEntity<String> login(@PathVariable Long id, @RequestBody Alumno alumno) {
+    public ResponseEntity<Map<String, String>> login(@PathVariable Long id, @RequestBody Alumno alumno) {
         String session = alumnoService.login(id, alumno.getPassword());
-        return ResponseEntity.ok(session);
+        Map<String, String> response = new HashMap<>();
+        response.put("sessionString", session);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
     }
 
+
     @PostMapping("/{id}/session/verify")
-    public ResponseEntity<Boolean> verifySession(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<Map<String, Boolean>> verifySession(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
         String sessionString = requestBody.get("sessionString");
+        Map<String, Boolean> response = new HashMap<>();
 
         if (sessionString != null) {
             boolean valid = alumnoService.verifySession(id, sessionString);
-            
+            response.put("isValid", valid);
+
             if (valid) {
-                return ResponseEntity.ok(true);
+                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).contentType(MediaType.APPLICATION_JSON).body(response);
             }
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+            response.put("isValid", false);
+            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(response);
         }
     }
+
     
     @PostMapping("/{id}/session/logout")
-    public ResponseEntity<String> logout(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<Map<String, String>> logout(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
         String sessionString = requestBody.get("sessionString");
+        Map<String, String> response = new HashMap<>();
 
         if (sessionString != null) {
             alumnoService.logout(id, sessionString);
-            return ResponseEntity.ok("Sesión cerrada con éxito");
+            response.put("message", "Sesión cerrada con éxito");
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No se proporcionó una sesión");
+            response.put("error", "No se proporcionó una sesión");
+            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body(response);
         }
     }
 }
